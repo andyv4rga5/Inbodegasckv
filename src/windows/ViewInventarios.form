@@ -122,7 +122,7 @@
               <StringArray count="4">
                 <StringItem index="0" value="Select --"/>
                 <StringItem index="1" value="Food"/>
-                <StringItem index="2" value="Accesosries"/>
+                <StringItem index="2" value="Accessories"/>
                 <StringItem index="3" value="Veterinary"/>
               </StringArray>
             </Property>

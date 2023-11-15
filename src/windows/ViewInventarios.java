@@ -35,7 +35,7 @@ public class ViewInventarios extends javax.swing.JFrame {
         try {
             Connection con = ConnectionBD.getConnection();
             Statement stmt = con.createStatement();
-            String query = "SELECT Nombre, Marca, Descripcion, Precio, Cantidad FROM productos";
+            String query = "SELECT Nombre, Marca, Descripcion, Precio, Cantidad,TipoProducto FROM productos";
             ResultSet rs = stmt.executeQuery(query);
 
             DefaultTableModel model = new DefaultTableModel();
@@ -44,6 +44,7 @@ public class ViewInventarios extends javax.swing.JFrame {
             model.addColumn("Descripcion");
             model.addColumn("Precio");
             model.addColumn("Cantidad");
+            model.addColumn("Tipo Producto");
 
             if (tblProductosAdmin.getRowCount() > 0) {
                 model.setRowCount(0);
@@ -55,12 +56,16 @@ public class ViewInventarios extends javax.swing.JFrame {
                 String descripcion = rs.getString("Descripcion");
                 String precio = rs.getString("Precio");
                 String cantidad = rs.getString("Cantidad");
-                model.addRow(new Object[]{nombre, marca, descripcion, precio, cantidad});
+                String tProducto = rs.getString("TipoProducto");
+                model.addRow(new Object[]{nombre, marca, descripcion, precio, cantidad,tProducto});
             }
 
             tblProductosAdmin.setModel(model);
             tblProductosAdmin.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
             ajustarAnchoColumnas();
+
+            // Asignar el renderizador personalizado a la columna "Tipo Producto"
+            tblProductosAdmin.getColumnModel().getColumn(5).setCellRenderer(new TipoProductoRender());
 
             rs.close();
             stmt.close();
@@ -119,7 +124,7 @@ public class ViewInventarios extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        cbxDetProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select --", "Food", "Accesosries", "Veterinary" }));
+        cbxDetProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select --", "Food", "Accessories", "Veterinary" }));
         cbxDetProductos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxDetProductosActionPerformed(evt);
@@ -244,7 +249,8 @@ public class ViewInventarios extends javax.swing.JFrame {
     private void cbxDetProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDetProductosActionPerformed
         // TODO add your handling code here:
         String filtroSeleccion = cbxDetProductos.getSelectedItem().toString();
-        filtrarTablaPorSeleccion(filtroSeleccion);
+        int codigoTipoProducto = obtenerCodigoTipoProducto(filtroSeleccion);
+        filtrarTablaPorTipoProducto(String.valueOf(codigoTipoProducto));
     }//GEN-LAST:event_cbxDetProductosActionPerformed
 
     private void filtrarTablaPorDescripcion(String filtro) {
@@ -259,6 +265,18 @@ public class ViewInventarios extends javax.swing.JFrame {
         }
     }
     
+    private void filtrarTablaPorTipoProducto(String filtro) {
+        DefaultTableModel model = (DefaultTableModel) tblProductosAdmin.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        tblProductosAdmin.setRowSorter(sorter);
+
+        if (filtro.length() == 0) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter(filtro, 5)); // 2 es el índice de la columna de descripción
+        }
+    }
+    
     private void filtrarTablaPorSeleccion(String filtro) {
         DefaultTableModel model = (DefaultTableModel) tblProductosAdmin.getModel();
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
@@ -268,6 +286,19 @@ public class ViewInventarios extends javax.swing.JFrame {
             sorter.setRowFilter(null);
         } else {
             sorter.setRowFilter(RowFilter.regexFilter(filtro, 1)); // 1 es el índice de la columna de marca (ajusta el índice según la columna que desees filtrar)
+        }
+    }
+    
+    private int obtenerCodigoTipoProducto(String tipoProducto) {
+        switch (tipoProducto) {
+            case "Food":
+                return 1;
+            case "Accessories":
+                return 2;
+            case "Veterinary":
+                return 3;
+            default:
+                return -1; // o algún valor predeterminado si es necesario
         }
     }
     /**
