@@ -23,6 +23,7 @@ public class SalidaDeProductos extends javax.swing.JFrame {
     public SalidaDeProductos() {
         initComponents();
         llenarCbx();
+        btnActualizarSalida.setEnabled(false);
         setLocationRelativeTo(null);
 
     }
@@ -135,12 +136,11 @@ public class SalidaDeProductos extends javax.swing.JFrame {
                                 .addGap(78, 78, 78)
                                 .addComponent(lblMarcaSalida)))
                         .addGap(18, 18, 18)
-                        .addComponent(cbxMarcaProductoSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cbxMarcaProductoSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(253, 253, 253)
+                        .addComponent(btnBusqedaProductos)))
                 .addContainerGap(56, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnBusqedaProductos)
-                .addGap(252, 252, 252))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,9 +153,9 @@ public class SalidaDeProductos extends javax.swing.JFrame {
                     .addComponent(cbxCategoriaProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblMarcaSalida)
                     .addComponent(cbxMarcaProductoSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnBusqedaProductos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -198,17 +198,30 @@ public class SalidaDeProductos extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultListModel<String> modeloLista = (DefaultListModel<String>) jListProductosSalida.getModel();
 
+        // Verificar si se ha seleccionado un elemento en la lista
+        if (jListProductosSalida.isSelectionEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select a product from the list.", "Selection Error", JOptionPane.ERROR_MESSAGE);
+            return; // Detener la ejecución si no hay un producto seleccionado
+        }
+        
         // Obtener el valor seleccionado
         String valorSeleccionado = jListProductosSalida.getSelectedValue();
         Object valorSpinner = spnCantidadSalida.getValue();
         int valorEntero = (Integer) valorSpinner;
-        String mensaje;
+        
+        if (valorEntero <= 0) {
+            JOptionPane.showMessageDialog(this, "Quantity must be greater than zero.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return; // Detener la ejecución si la cantidad es inválida
+        }
 
         productosDao dao = new productosDao();
 
         // Llamar al método eliminarCantidad
         boolean actualizacionExitosa = dao.eliminarCantidad(valorSeleccionado, valorEntero);
 
+        String mensaje;
+
+        
         if (actualizacionExitosa) {
             mensaje = "Update successful.";
         } else {
@@ -217,7 +230,6 @@ public class SalidaDeProductos extends javax.swing.JFrame {
         }
 
         JOptionPane.showMessageDialog(this, mensaje);
-
     }//GEN-LAST:event_btnActualizarSalidaActionPerformed
 
     private void btnBusqedaProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBusqedaProductosActionPerformed
@@ -225,6 +237,11 @@ public class SalidaDeProductos extends javax.swing.JFrame {
         String tipProducto = (String) cbxCategoriaProducto.getSelectedItem();
         String marcaProducto = (String) cbxMarcaProductoSalida.getSelectedItem();
 
+        if (tipProducto == null || tipProducto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please select a product category.", "Selection Error", JOptionPane.ERROR_MESSAGE);
+            return; // Detener la ejecución si no hay una categoría seleccionada
+        }
+        
         int tProducto = 0;
 
         switch (tipProducto) {
@@ -244,6 +261,13 @@ public class SalidaDeProductos extends javax.swing.JFrame {
         productosDao prodDTO = new productosDao();
         List<String> listaProductos = prodDTO.ListaNombresProductos(marcaProducto, tProducto);
 
+        // Verificar si la lista de productos está vacía
+        if (listaProductos.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No products found for the selected criteria.", "No Results", JOptionPane.INFORMATION_MESSAGE);
+            btnActualizarSalida.setEnabled(false);
+            return; // Detener la ejecución si no hay productos para mostrar
+        }
+        
         // Limpiar el modelo de lista antes de agregar nuevos elementos
         modeloLista.clear();
 
@@ -254,6 +278,12 @@ public class SalidaDeProductos extends javax.swing.JFrame {
 
         // Asignar el modelo de lista al JList
         jListProductosSalida.setModel(modeloLista);
+        
+        if (jListProductosSalida != null) {
+            btnActualizarSalida.setEnabled(true);
+        }else{
+            btnActualizarSalida.setEnabled(false);
+        }
     }//GEN-LAST:event_btnBusqedaProductosActionPerformed
 
     private void cbxMarcaProductoSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxMarcaProductoSalidaActionPerformed

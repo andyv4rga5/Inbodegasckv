@@ -19,7 +19,7 @@ public class ConnectionBD {
             try {
                 Class.forName("com.mysql.jdbc.Driver");
                 connection = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/inbodegasCKV", "cchaparro", "192837465");
+                        "jdbc:mysql://192.168.0.103:3306/inbodegasCKV", "cchaparro", "192837465");
 
                 /**
                  * connection.close();*

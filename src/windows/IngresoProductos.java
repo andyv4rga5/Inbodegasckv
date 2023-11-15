@@ -58,6 +58,12 @@ public class IngresoProductos extends javax.swing.JFrame {
             }
         });
 
+        txtPrecioProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPrecioProdActionPerformed(evt);
+            }
+        });
+
         lblNombreProd.setText("Name Product");
 
         lblTipoProducto.setText("Tipe Product");
@@ -161,9 +167,9 @@ public class IngresoProductos extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegresarProductos)
                     .addComponent(jButton1))
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblMarcaIngresoProductos)
-                .addGap(18, 18, 18))
+                .addGap(12, 12, 12))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -197,8 +203,14 @@ public class IngresoProductos extends javax.swing.JFrame {
         String marca = txtMarcaProd.getText().trim();
         String detalle = txtDescripcionProducto.getText().trim();
         String precioTexto = txtPrecioProd.getText().trim();
-        int precio = Integer.parseInt(precioTexto);
         String cantidadTexto = txtCantidadProducto.getText().trim();
+        
+        if (!precioTexto.matches("\\d+") || !cantidadTexto.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "Price and Quantity must be valid numbers.");
+            return;
+        }
+        
+        int precio = Integer.parseInt(precioTexto);
         int cantidad = Integer.parseInt(cantidadTexto);
         int tProducto = 0;
         
@@ -215,9 +227,15 @@ public class IngresoProductos extends javax.swing.JFrame {
             default:
                 break;
         }
+        
+        // Validar que los campos de texto no contengan caracteres especiales
+        if (!nomProducto.matches("[a-zA-Z0-9\\s]+") || !marca.matches("[a-zA-Z0-9\\s]+") || !detalle.matches("[a-zA-Z0-9\\s]+")) {
+            JOptionPane.showMessageDialog(this, "Name, Brand, and Description must not contain special characters.");
+            return;
+        }
 
         //Control de error para capos vacios o para loa campos precio, cantidad que reciban números
-        if (nomProducto.isEmpty() || marca.isEmpty() || detalle.isEmpty() || precio < 0 || cantidad < 0 || tProducto < 0 ) {
+        if (nomProducto.isEmpty() || marca.isEmpty() || detalle.isEmpty() || precio <= 0 || cantidad <= 0 || tProducto <= 0 ) {
             StringBuilder errorMessage = new StringBuilder("The following fields cannot be empty:\n");
 
             if (nomProducto.isEmpty()) {
@@ -229,13 +247,13 @@ public class IngresoProductos extends javax.swing.JFrame {
             if (detalle.isEmpty()) {
                 errorMessage.append("- Description\n");
             }
-            if (precio < 0) {
-                errorMessage.append("-  Price must be a valid number\n");
+            if (precio <= 0) {
+                errorMessage.append("-      Price must be a valid number\n");
             } 
-            if (cantidad < 0) {
+            if (cantidad <= 0) {
                 errorMessage.append("- Quantity must be a valid integer\n");
             } 
-            if (tProducto < 0 ) {
+            if (tProducto <= 0 ) {
                 errorMessage.append("- Type\n");
             }
 
@@ -267,6 +285,21 @@ public class IngresoProductos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxProductoActionPerformed
 
+    private void txtPrecioProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioProdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPrecioProdActionPerformed
+
+    
+    private void txtPrecioProdFocusLost(java.awt.event.FocusEvent evt) {
+        // Verificar si el contenido del campo es un número
+        String precioTexto = txtPrecioProd.getText().trim();
+
+        if (!precioTexto.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "Price must be a valid number.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            txtPrecioProd.requestFocusInWindow(); // Devolver el foco al campo de texto
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
