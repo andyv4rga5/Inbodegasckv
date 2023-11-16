@@ -45,7 +45,7 @@ public class IngresoProductos extends javax.swing.JFrame {
         cbxProducto = new javax.swing.JComboBox<>();
         lblMarcaIngresoProductos = new javax.swing.JLabel();
         btnRegresarProductos = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnGuardarProd = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -55,12 +55,6 @@ public class IngresoProductos extends javax.swing.JFrame {
         txtMarcaProd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMarcaProdActionPerformed(evt);
-            }
-        });
-
-        txtPrecioProd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPrecioProdActionPerformed(evt);
             }
         });
 
@@ -93,10 +87,10 @@ public class IngresoProductos extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Save Product");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardarProd.setText("Save Product");
+        btnGuardarProd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnGuardarProdActionPerformed(evt);
             }
         });
 
@@ -131,7 +125,7 @@ public class IngresoProductos extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnRegresarProductos)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
-                                .addComponent(jButton1)))))
+                                .addComponent(btnGuardarProd)))))
                 .addGap(68, 68, 68))
         );
         jPanel1Layout.setVerticalGroup(
@@ -166,10 +160,10 @@ public class IngresoProductos extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRegresarProductos)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(btnGuardarProd))
+                .addGap(6, 6, 6)
                 .addComponent(lblMarcaIngresoProductos)
-                .addGap(12, 12, 12))
+                .addGap(18, 18, 18))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -196,7 +190,7 @@ public class IngresoProductos extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnRegresarProductosActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnGuardarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarProdActionPerformed
         // TODO add your handling code here:
         String nomProducto = txtNomProduct.getText().trim();
         String tipProducto = (String) cbxProducto.getSelectedItem();
@@ -209,7 +203,7 @@ public class IngresoProductos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Price and Quantity must be valid numbers.");
             return;
         }
-        
+         
         int precio = Integer.parseInt(precioTexto);
         int cantidad = Integer.parseInt(cantidadTexto);
         int tProducto = 0;
@@ -227,8 +221,8 @@ public class IngresoProductos extends javax.swing.JFrame {
             default:
                 break;
         }
-        
-        // Validar que los campos de texto no contengan caracteres especiales
+
+           // Validar que los campos de texto no contengan caracteres especiales
         if (!nomProducto.matches("[a-zA-Z0-9\\s]+") || !marca.matches("[a-zA-Z0-9\\s]+") || !detalle.matches("[a-zA-Z0-9\\s]+")) {
             JOptionPane.showMessageDialog(this, "Name, Brand, and Description must not contain special characters.");
             return;
@@ -248,7 +242,7 @@ public class IngresoProductos extends javax.swing.JFrame {
                 errorMessage.append("- Description\n");
             }
             if (precio <= 0) {
-                errorMessage.append("-      Price must be a valid number\n");
+                errorMessage.append("- Price must be a valid number\n");
             } 
             if (cantidad <= 0) {
                 errorMessage.append("- Quantity must be a valid integer\n");
@@ -279,16 +273,11 @@ public class IngresoProductos extends javax.swing.JFrame {
         }
         
         JOptionPane.showMessageDialog(this,mensaje);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnGuardarProdActionPerformed
 
     private void cbxProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxProductoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxProductoActionPerformed
-
-    private void txtPrecioProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPrecioProdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtPrecioProdActionPerformed
-
     
     private void txtPrecioProdFocusLost(java.awt.event.FocusEvent evt) {
         // Verificar si el contenido del campo es un número
@@ -336,9 +325,9 @@ public class IngresoProductos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGuardarProd;
     private javax.swing.JButton btnRegresarProductos;
     private javax.swing.JComboBox<String> cbxProducto;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;

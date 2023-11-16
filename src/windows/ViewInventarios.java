@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -118,6 +119,8 @@ public class ViewInventarios extends javax.swing.JFrame {
         tblProductosAdmin = new javax.swing.JTable();
         btnRegresarAdminInventarios = new javax.swing.JButton();
         lblMarcaListUsers1 = new javax.swing.JLabel();
+        btnEliminarRegAdmin = new javax.swing.JButton();
+        btnActualizarRegAdmin = new javax.swing.JButton();
 
         lblMarcaListUsers.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         lblMarcaListUsers.setText("InBodegas CKV - Huellitas CKV");
@@ -165,6 +168,20 @@ public class ViewInventarios extends javax.swing.JFrame {
         lblMarcaListUsers1.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         lblMarcaListUsers1.setText("InBodegas CKV - Huellitas CKV");
 
+        btnEliminarRegAdmin.setText("Delete");
+        btnEliminarRegAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarRegAdminActionPerformed(evt);
+            }
+        });
+
+        btnActualizarRegAdmin.setText("Update");
+        btnActualizarRegAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarRegAdminActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -172,18 +189,13 @@ public class ViewInventarios extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTipoProductoInvent)
-                            .addComponent(lblDetProductos))
-                        .addGap(42, 42, 42)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbxDetProductos, 0, 138, Short.MAX_VALUE)
-                            .addComponent(txtDescripcionInvent))
-                        .addGap(104, 104, 104))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnRegresarAdminInventarios)
-                        .addGap(47, 47, 47))))
+                    .addComponent(lblTipoProductoInvent)
+                    .addComponent(lblDetProductos))
+                .addGap(42, 42, 42)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cbxDetProductos, 0, 138, Short.MAX_VALUE)
+                    .addComponent(txtDescripcionInvent))
+                .addGap(104, 104, 104))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -192,11 +204,20 @@ public class ViewInventarios extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lblMarcaListUsers1)))
-                .addContainerGap(378, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 727, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnEliminarRegAdmin)
+                        .addGap(43, 43, 43)
+                        .addComponent(btnActualizarRegAdmin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRegresarAdminInventarios)
+                        .addGap(47, 47, 47))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 727, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,7 +235,10 @@ public class ViewInventarios extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19)
-                .addComponent(btnRegresarAdminInventarios)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRegresarAdminInventarios)
+                    .addComponent(btnEliminarRegAdmin)
+                    .addComponent(btnActualizarRegAdmin))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblMarcaListUsers1)
                 .addContainerGap())
@@ -241,17 +265,58 @@ public class ViewInventarios extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegresarAdminInventariosActionPerformed
 
     private void txtDescripcionInventActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionInventActionPerformed
-        // TODO add your handling code here:
+
         String filtroDescripcion = txtDescripcionInvent.getText().trim();
         filtrarTablaPorDescripcion(filtroDescripcion);
     }//GEN-LAST:event_txtDescripcionInventActionPerformed
 
     private void cbxDetProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDetProductosActionPerformed
-        // TODO add your handling code here:
+
         String filtroSeleccion = cbxDetProductos.getSelectedItem().toString();
         int codigoTipoProducto = obtenerCodigoTipoProducto(filtroSeleccion);
         filtrarTablaPorTipoProducto(String.valueOf(codigoTipoProducto));
     }//GEN-LAST:event_cbxDetProductosActionPerformed
+
+    private void btnEliminarRegAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarRegAdminActionPerformed
+
+        int selectedRow = tblProductosAdmin.getSelectedRow();
+        CrudAdminDao crud = new CrudAdminDao();
+
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a product from the list.", "Selection Error", JOptionPane.ERROR_MESSAGE);
+            return; // Detener la ejecución si no hay un producto seleccionado
+        }
+
+        boolean eliminacionExitosa =  crud.EliminarProduct(tblProductosAdmin.getValueAt(selectedRow, 2).toString());
+        String mensaje;
+        
+          
+        if (eliminacionExitosa) {
+            mensaje = "successful product elimination.";
+        } else {
+            // Manejar el caso en que la actualización no fue exitosa
+            mensaje = "It was not possible to remove the product.";
+        }
+
+        JOptionPane.showMessageDialog(this, mensaje);
+        llenarTablaProductos();
+
+    }//GEN-LAST:event_btnEliminarRegAdminActionPerformed
+
+    private void btnActualizarRegAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarRegAdminActionPerformed
+        
+        int selectedRow = tblProductosAdmin.getSelectedRow();
+        CrudAdminDao crud = new CrudAdminDao();
+
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Please select a product from the list.", "Selection Error", JOptionPane.ERROR_MESSAGE);
+            return; // Detener la ejecución si no hay un producto seleccionado
+        }
+        
+        AdminIngresoProduct AdminProdView = new AdminIngresoProduct();
+        AdminProdView.setVisible(true);
+        this.dispose(); 
+    }//GEN-LAST:event_btnActualizarRegAdminActionPerformed
 
     private void filtrarTablaPorDescripcion(String filtro) {
         DefaultTableModel model = (DefaultTableModel) tblProductosAdmin.getModel();
@@ -337,6 +402,8 @@ public class ViewInventarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizarRegAdmin;
+    private javax.swing.JButton btnEliminarRegAdmin;
     private javax.swing.JButton btnRegresarAdminInventarios;
     private javax.swing.JComboBox<String> cbxDetProductos;
     private javax.swing.JPanel jPanel1;
